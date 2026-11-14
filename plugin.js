@@ -98,10 +98,10 @@ export const meta = {
     key: "visduo_ais-video-generations",
     name: "AIS Service Video Generations",
     description: {
-        en: "AIS Service Video Generations",
-        zh: "AIS Service Video Generations",
+        en: "AIS Service video generation integration plugin",
+        zh: "AIS Service 视频生成服务接入插件",
     },
-    version: "3.1.1",
+    version: "3.1.2",
     author: { name: "多栈科技" },
     website: "https://ais.6os.net/",
     fetchMode: "per_task",
