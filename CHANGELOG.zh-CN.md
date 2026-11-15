@@ -1,13 +1,13 @@
 ---
 changelogVersion: 1
 plugin: "visduo_ais-video-generations"
-version: "3.1.2"
+version: "3.2.0"
 locale: "zh-CN"
 ---
 # Changelog
 
-## [3.1.2]
+## [3.2.0]
 
 ### Changed
 
-- 优化插件的中英文描述。
+- 插件官网统一为 `https://www.6os.net/`。

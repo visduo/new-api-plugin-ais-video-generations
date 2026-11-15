@@ -101,9 +101,9 @@ export const meta = {
         en: "AIS Service video generation integration plugin",
         zh: "AIS Service 视频生成服务接入插件",
     },
-    version: "3.1.2",
+    version: "3.2.0",
     author: { name: "多栈科技" },
-    website: "https://ais.6os.net/",
+    website: "https://www.6os.net/",
     fetchMode: "per_task",
     upstreams: ["new_api"],
     models: [
