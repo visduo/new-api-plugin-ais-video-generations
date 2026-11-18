@@ -1,7 +1,5 @@
 const VIDEO_MODEL_RESOLUTIONS = {
     "ais-video-generations-test": ["480p", "720p", "768p", "1080p", "2k", "4k"],
-    "32-seedance-2.0-fast": ["480p", "720p"],
-    "32-seedance-2.0-mini": ["480p", "720p"],
     "3301-seedance-2.5": ["720p"],
     "3302-seedance-2.5": ["720p"],
     "3303-seedance-2.0": ["720p"],
@@ -101,15 +99,13 @@ export const meta = {
         en: "AIS Service video generation integration plugin",
         zh: "AIS Service 视频生成服务接入插件",
     },
-    version: "3.3.0",
+    version: "3.4.0",
     author: { name: "多栈科技" },
     website: "https://www.echostack.net/",
     fetchMode: "per_task",
     upstreams: ["new_api"],
     models: [
         "ais-video-generations-test",
-        "32-seedance-2.0-fast",
-        "32-seedance-2.0-mini",
         "3301-seedance-2.5",
         "3302-seedance-2.5",
         "3303-seedance-2.0",
@@ -175,28 +171,6 @@ export const meta = {
                 { label: "5s · 1080p", facts: { seconds: 5, resolution: "1080p" } },
                 { label: "5s · 2k", facts: { seconds: 5, resolution: "2k" } },
                 { label: "5s · 4k", facts: { seconds: 5, resolution: "4k" } },
-            ],
-        },
-        {
-            models: ["32-seedance-2.0-fast", "32-seedance-2.0-mini"],
-            schema: {
-                seconds: {
-                    type: "number",
-                    unit: "second",
-                    description: { en: "Video generation unit price", zh: "视频生成单价" },
-                },
-                resolution: {
-                    enum: ["480p", "720p"],
-                    enumLabels: {
-                        "480p": { en: "480p", zh: "480p" },
-                        "720p": { en: "720p", zh: "720p" },
-                    },
-                    description: { en: "Output video resolution", zh: "输出视频分辨率" },
-                },
-            },
-            examples: [
-                { label: "5s · 480p", facts: { seconds: 5, resolution: "480p" } },
-                { label: "5s · 720p", facts: { seconds: 5, resolution: "720p" } },
             ],
         },
         {
