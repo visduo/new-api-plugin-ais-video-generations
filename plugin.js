@@ -8,6 +8,9 @@ const VIDEO_MODEL_RESOLUTIONS = {
     "3306-seedance-2.0-mini": ["720p"],
     "3307-seedance-2.0": ["720p"],
     "3308-seedance-2.0-fast": ["720p"],
+    "3309-seedance-2.0-fast": ["720p"],
+    "3310-seedance-2.5": ["720p"],
+    "3311-seedance-2.5": ["720p"],
 };
 const VIDEO_MODEL_BILLING = {
     "3301-seedance-2.5": "generation",
@@ -18,6 +21,9 @@ const VIDEO_MODEL_BILLING = {
     "3306-seedance-2.0-mini": "generation",
     "3307-seedance-2.0": "generation",
     "3308-seedance-2.0-fast": "generation",
+    "3309-seedance-2.0-fast": "generation",
+    "3310-seedance-2.5": "generation",
+    "3311-seedance-2.5": "generation",
 };
 
 const DEFAULT_VIDEO_RESOLUTIONS = ["480p", "720p", "768p", "1080p", "2k", "4k"];
@@ -99,7 +105,7 @@ export const meta = {
         en: "AIS Service video generation integration plugin",
         zh: "AIS Service 视频生成服务接入插件",
     },
-    version: "3.4.0",
+    version: "3.6.0",
     author: { name: "多栈科技" },
     website: "https://www.echostack.net/",
     fetchMode: "per_task",
@@ -114,6 +120,9 @@ export const meta = {
         "3306-seedance-2.0-mini",
         "3307-seedance-2.0",
         "3308-seedance-2.0-fast",
+        "3309-seedance-2.0-fast",
+        "3310-seedance-2.5",
+        "3311-seedance-2.5",
     ],
     usageSchema: {
         seconds: {
@@ -182,6 +191,9 @@ export const meta = {
                 "3306-seedance-2.0-mini",
                 "3307-seedance-2.0",
                 "3308-seedance-2.0-fast",
+                "3309-seedance-2.0-fast",
+                "3310-seedance-2.5",
+                "3311-seedance-2.5",
             ],
             schema: {
                 generations: {
