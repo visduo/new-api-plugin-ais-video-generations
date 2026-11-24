@@ -100,12 +100,12 @@ function videoUsageProfiles() {
 export const meta = {
     apiVersion: 1,
     key: "visduo_ais-video-generations",
-    name: "AIS Service Video Generations",
+    name: "EchoStack Video Generations",
     description: {
-        en: "AIS Service video generation integration plugin",
-        zh: "AIS Service 视频生成服务接入插件",
+        en: "EchoStack video generation integration plugin",
+        zh: "EchoStack 视频生成服务接入插件",
     },
-    version: "3.6.0",
+    version: "3.7.0",
     author: { name: "多栈科技" },
     website: "https://www.echostack.net/",
     fetchMode: "per_task",
