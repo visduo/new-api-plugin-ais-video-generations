@@ -11,6 +11,12 @@ const VIDEO_MODEL_RESOLUTIONS = {
     "3309-seedance-2.0-fast": ["720p"],
     "3310-seedance-2.5": ["720p"],
     "3311-seedance-2.5": ["720p"],
+    "3312-wan3": ["720p", "1080p"],
+    "3313-seedance-2": ["480p", "720p"],
+    "3314-seedance-2.0-mini": ["480p", "720p"],
+    "3315-seedance-2.0-fast": ["480p", "720p"],
+    "3316-seedance-2.5": ["480p", "720p", "1080p"],
+    "3317-seedance-2.5-flash": ["480p", "720p"],
 };
 const VIDEO_MODEL_BILLING = {
     "3301-seedance-2.5": "generation",
@@ -24,7 +30,21 @@ const VIDEO_MODEL_BILLING = {
     "3309-seedance-2.0-fast": "generation",
     "3310-seedance-2.5": "generation",
     "3311-seedance-2.5": "generation",
+    "3312-wan3": "generation",
+    "3313-seedance-2": "second",
+    "3314-seedance-2.0-mini": "second",
+    "3315-seedance-2.0-fast": "second",
+    "3316-seedance-2.5": "second",
+    "3317-seedance-2.5-flash": "second",
 };
+const VIDEO_MODEL_RESOLUTION_BILLING = [
+    "3312-wan3",
+    "3313-seedance-2",
+    "3314-seedance-2.0-mini",
+    "3315-seedance-2.0-fast",
+    "3316-seedance-2.5",
+    "3317-seedance-2.5-flash",
+];
 
 const DEFAULT_VIDEO_RESOLUTIONS = ["480p", "720p", "768p", "1080p", "2k", "4k"];
 const RESOLUTION_LABELS = {
@@ -56,23 +76,39 @@ function billingFor(model) {
     return VIDEO_MODEL_BILLING[model] || "second";
 }
 
+function pricedByResolution(model) {
+    return VIDEO_MODEL_RESOLUTION_BILLING.includes(trimmed(model));
+}
+
 function videoUsageSchema(profile) {
+    const resolution = {
+        enum: profile.resolutions,
+        enumLabels: Object.fromEntries(profile.resolutions.map((item) => [item, RESOLUTION_LABELS[item]])),
+        description: { en: "Output video resolution", zh: "输出视频分辨率" },
+    };
     if (profile.billing === "generation") {
-        return { generations: VIDEO_GENERATIONS_FIELD };
+        const schema = { generations: VIDEO_GENERATIONS_FIELD };
+        if (profile.pricedByResolution) {
+            schema.resolution = resolution;
+        }
+        return schema;
     }
     return {
         seconds: VIDEO_SECONDS_FIELD,
-        resolution: {
-            enum: profile.resolutions,
-            enumLabels: Object.fromEntries(profile.resolutions.map((resolution) => [resolution, RESOLUTION_LABELS[resolution]])),
-            description: { en: "Output video resolution", zh: "输出视频分辨率" },
-        },
+        resolution: resolution,
     };
 }
 
 function videoUsageExamples(profile) {
     if (profile.billing === "generation") {
-        return [{ label: "1 条 · " + profile.resolutions[0], facts: { generations: 1 } }];
+        const resolutions = profile.pricedByResolution ? profile.resolutions : [profile.resolutions[0]];
+        return resolutions.map((resolution) => {
+            const facts = { generations: 1 };
+            if (profile.pricedByResolution) {
+                facts.resolution = resolution;
+            }
+            return { label: "1 条 · " + resolution, facts: facts };
+        });
     }
     return profile.resolutions.map((resolution) => ({
         label: "5s · " + resolution,
@@ -83,8 +119,8 @@ function videoUsageExamples(profile) {
 function videoUsageProfiles() {
     const groups = new Map();
     for (const [model, resolutions] of Object.entries(VIDEO_MODEL_RESOLUTIONS)) {
-        const profile = { billing: billingFor(model), resolutions: resolutions };
-        const key = JSON.stringify([profile.billing, profile.resolutions]);
+        const profile = { billing: billingFor(model), resolutions: resolutions, pricedByResolution: pricedByResolution(model) };
+        const key = JSON.stringify([profile.billing, profile.resolutions, profile.pricedByResolution]);
         if (!groups.has(key)) {
             groups.set(key, { models: [], profile: profile });
         }
@@ -105,7 +141,7 @@ export const meta = {
         en: "EchoStack video generation integration plugin",
         zh: "EchoStack 视频生成服务接入插件",
     },
-    version: "3.7.0",
+    version: "3.8.0",
     author: { name: "多栈科技" },
     website: "https://www.echostack.net/",
     fetchMode: "per_task",
@@ -123,6 +159,12 @@ export const meta = {
         "3309-seedance-2.0-fast",
         "3310-seedance-2.5",
         "3311-seedance-2.5",
+        "3312-wan3",
+        "3313-seedance-2",
+        "3314-seedance-2.0-mini",
+        "3315-seedance-2.0-fast",
+        "3316-seedance-2.5",
+        "3317-seedance-2.5-flash",
     ],
     usageSchema: {
         seconds: {
@@ -221,6 +263,80 @@ export const meta = {
                 { label: "1 条 · 768p", facts: { generations: 1 } },
             ],
         },
+        {
+            models: ["3312-wan3"],
+            schema: {
+                generations: {
+                    type: "number",
+                    unit: "count",
+                    unitLabel: { en: "generation", zh: "条" },
+                    description: { en: "Video generation unit price", zh: "视频生成单价" },
+                },
+                resolution: {
+                    enum: ["720p", "1080p"],
+                    enumLabels: {
+                        "720p": { en: "720p", zh: "720p" },
+                        "1080p": { en: "1080p", zh: "1080p" },
+                    },
+                    description: { en: "Output video resolution", zh: "输出视频分辨率" },
+                },
+            },
+            examples: [
+                { label: "1 条 · 720p", facts: { generations: 1, resolution: "720p" } },
+                { label: "1 条 · 1080p", facts: { generations: 1, resolution: "1080p" } },
+            ],
+        },
+        {
+            models: [
+                "3313-seedance-2",
+                "3314-seedance-2.0-mini",
+                "3315-seedance-2.0-fast",
+                "3317-seedance-2.5-flash",
+            ],
+            schema: {
+                seconds: {
+                    type: "number",
+                    unit: "second",
+                    description: { en: "Video generation unit price", zh: "视频生成单价" },
+                },
+                resolution: {
+                    enum: ["480p", "720p"],
+                    enumLabels: {
+                        "480p": { en: "480p", zh: "480p" },
+                        "720p": { en: "720p", zh: "720p" },
+                    },
+                    description: { en: "Output video resolution", zh: "输出视频分辨率" },
+                },
+            },
+            examples: [
+                { label: "5s · 480p", facts: { seconds: 5, resolution: "480p" } },
+                { label: "5s · 720p", facts: { seconds: 5, resolution: "720p" } },
+            ],
+        },
+        {
+            models: ["3316-seedance-2.5"],
+            schema: {
+                seconds: {
+                    type: "number",
+                    unit: "second",
+                    description: { en: "Video generation unit price", zh: "视频生成单价" },
+                },
+                resolution: {
+                    enum: ["480p", "720p", "1080p"],
+                    enumLabels: {
+                        "480p": { en: "480p", zh: "480p" },
+                        "720p": { en: "720p", zh: "720p" },
+                        "1080p": { en: "1080p", zh: "1080p" },
+                    },
+                    description: { en: "Output video resolution", zh: "输出视频分辨率" },
+                },
+            },
+            examples: [
+                { label: "5s · 480p", facts: { seconds: 5, resolution: "480p" } },
+                { label: "5s · 720p", facts: { seconds: 5, resolution: "720p" } },
+                { label: "5s · 1080p", facts: { seconds: 5, resolution: "1080p" } },
+            ],
+        },
     ],
     routes: [
         {
@@ -255,7 +371,7 @@ function resolutionValue(value) {
 function modelProfile(model) {
     const name = trimmed(model);
     if (Object.prototype.hasOwnProperty.call(VIDEO_MODEL_RESOLUTIONS, name)) {
-        return { billing: billingFor(name), resolutions: VIDEO_MODEL_RESOLUTIONS[name] };
+        return { billing: billingFor(name), resolutions: VIDEO_MODEL_RESOLUTIONS[name], pricedByResolution: pricedByResolution(name) };
     }
     return DEFAULT_VIDEO_PROFILE;
 }
@@ -271,7 +387,15 @@ function profileFor(ctx) {
 
 function factsFromSource(source, profile) {
     if (profile.billing === "generation") {
-        return { generations: 1 };
+        const facts = { generations: 1 };
+        if (profile.pricedByResolution) {
+            const metadata = object(source) && object(source.metadata) ? source.metadata : {};
+            const resolution = resolutionValue(metadata.quality);
+            if (resolution) {
+                facts.resolution = resolution;
+            }
+        }
+        return facts;
     }
     const metadata = object(source) && object(source.metadata) ? source.metadata : {};
     const facts = {};
