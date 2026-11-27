@@ -12,7 +12,7 @@ const VIDEO_MODEL_RESOLUTIONS = {
     "3310-seedance-2.5": ["720p"],
     "3311-seedance-2.5": ["720p"],
     "3312-wan3": ["720p", "1080p"],
-    "3313-seedance-2": ["480p", "720p"],
+    "3313-seedance-2.0": ["480p", "720p"],
     "3314-seedance-2.0-mini": ["480p", "720p"],
     "3315-seedance-2.0-fast": ["480p", "720p"],
     "3316-seedance-2.5": ["480p", "720p", "1080p"],
@@ -31,7 +31,7 @@ const VIDEO_MODEL_BILLING = {
     "3310-seedance-2.5": "generation",
     "3311-seedance-2.5": "generation",
     "3312-wan3": "generation",
-    "3313-seedance-2": "second",
+    "3313-seedance-2.0": "second",
     "3314-seedance-2.0-mini": "second",
     "3315-seedance-2.0-fast": "second",
     "3316-seedance-2.5": "second",
@@ -39,7 +39,7 @@ const VIDEO_MODEL_BILLING = {
 };
 const VIDEO_MODEL_RESOLUTION_BILLING = [
     "3312-wan3",
-    "3313-seedance-2",
+    "3313-seedance-2.0",
     "3314-seedance-2.0-mini",
     "3315-seedance-2.0-fast",
     "3316-seedance-2.5",
@@ -141,7 +141,7 @@ export const meta = {
         en: "EchoStack video generation integration plugin",
         zh: "EchoStack 视频生成服务接入插件",
     },
-    version: "3.8.0",
+    version: "3.8.1",
     author: { name: "多栈科技" },
     website: "https://www.echostack.net/",
     fetchMode: "per_task",
@@ -160,7 +160,7 @@ export const meta = {
         "3310-seedance-2.5",
         "3311-seedance-2.5",
         "3312-wan3",
-        "3313-seedance-2",
+        "3313-seedance-2.0",
         "3314-seedance-2.0-mini",
         "3315-seedance-2.0-fast",
         "3316-seedance-2.5",
@@ -288,7 +288,7 @@ export const meta = {
         },
         {
             models: [
-                "3313-seedance-2",
+                "3313-seedance-2.0",
                 "3314-seedance-2.0-mini",
                 "3315-seedance-2.0-fast",
                 "3317-seedance-2.5-flash",
